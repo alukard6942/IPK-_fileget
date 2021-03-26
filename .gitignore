@@ -1,3 +1,3 @@
-./src/port 
-./src/fileget 
-./src/*.o 
+src/port 
+src/fileget 
+src/*.o 
