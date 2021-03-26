@@ -38,8 +38,7 @@ int main(int argc, char **argv){
 
 	auto tpc = new Server_TCP(fps);
 
-	auto selftext = tpc->selftext(file);
-	std::cout << selftext;
+	tpc->download(file);
 
 	return 0;
 }

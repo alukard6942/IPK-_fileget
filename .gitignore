@@ -1,3 +1,4 @@
 src/port 
 src/fileget 
+src/index.txt 
 src/*.o 

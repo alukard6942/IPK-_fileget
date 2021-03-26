@@ -6,7 +6,7 @@ CFLAGS = -Wall -std=c++20 # -pedantic  #-O2 -g-std=c++11 -Wextra
 CC = g++
 
 example: fileget
-	./fileget -n 127.0.0.1:6966 -f fsp://me.cz/index.txt
+	./fileget -n 127.0.0.1:6669 -f fsp://me.cz/index.txt
 
 fileget: fileget.cpp server.o
 	$(CC) $(CFLAGS) -o fileget fileget.cpp server.cpp server.h 
@@ -28,4 +28,5 @@ clean:
 	rm -rf client.o
 	rm -rf server.o
 	rm -rf fileget
+	rm -rf index.txt
 

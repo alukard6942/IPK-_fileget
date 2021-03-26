@@ -6,6 +6,7 @@
 
 #include <iostream> 
 #include <netdb.h>
+#include <vector>
 
 #define BUFFER 1024 // 1kb by mohlo stacit
 #define OWNER "xkoval18"
@@ -53,7 +54,7 @@ class Server_TCP : public Server {
 		Server_TCP(std::string netwrk);
 		~Server_TCP();
     	
-		std::string selftext(std::string surl);
+		std::vector<char> selftext(std::string surl);
 		int download(std::string surl);
 		int downloadall( std::string surl);
     	

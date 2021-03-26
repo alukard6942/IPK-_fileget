@@ -12,9 +12,12 @@
 #include <arpa/inet.h>
 #include <iostream>
 #include <string.h>
+#include <vector>
 #include <cerrno>
 #include <err.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "server.h"
 #include "log.h"
@@ -91,7 +94,7 @@ std::string Server_UDP::lookup(std::string surl){
 
 // download file from server 
 // in: SURL (pr: fsp://example.com/index.txt
-std::string Server_TCP::selftext(std::string surl){
+std::vector<char> Server_TCP::selftext(std::string surl){
 	parse_surl(surl);
 
 	GET(File, Domain, OWNER); // send request
@@ -103,22 +106,29 @@ std::string Server_TCP::selftext(std::string surl){
 
 		int len = parse_len(header); // len of data
 
-		std::string data;
+		std::vector<char> data;
 
 		while(len > 0){
 			int bytes = recv();
 			len -= bytes;
 
-			data.append(Buffer);
+			data.reserve(strlen(Buffer));
+			for (int i=0; i < bytes; i++){
+				char tmp = Buffer[i];
+				data.push_back(tmp);
+			}
+
 		}
 
 		return data;
 		
 	} else
 	if (begins( header, "FSP/1.0 Not Found")){
+		err(1, "todo");
 
 	} else
 	if (begins( header, "FSP/1.0 Bad Request")){
+		err(1, "todo");
 
 	} 
 	else {
@@ -131,6 +141,14 @@ int Server_TCP::download(std::string surl){
 
 	auto data = selftext(surl);
 
+	FILE *file = fopen(&File[0], "w");
+
+	fwrite((char *) &data[0], data.size(), 1, file );
+
+
+	fclose(file);
+
+	return 1;
 }
 
 
@@ -208,6 +226,7 @@ void Server::parse_surl(std::string surl){
 	std::string begin = "fsp://";
 	int begin_l = begin.length();
 	if (surl.substr(0, begin_l) != begin){ // wrong imput
+		LOG(surl);
 		err(3, "SURL musi zacinat fsp://");
 	}
 
