@@ -34,11 +34,14 @@ int main(int argc, char **argv){
 	// --- geting fileserver
 	auto udp = new Server_UDP(address);
 
-	auto fps = udp->lookup(file);
+	auto tcp = udp->file_server_of(file);
 
-	auto tpc = new Server_TCP(fps);
+	tcp->download(file);
 
-	tpc->download(file);
+	delete udp;
+	delete tcp;
+
+	LOG(tcp)
 
 	return 0;
 }
