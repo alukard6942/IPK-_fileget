@@ -1,21 +1,17 @@
 # File: makefile
-# Author: xkoval18 <xkoval18@github>
-# File: makefile
-# Date: 20.03.2021
+# Author: xchuda04 
+# Date: 31.03.2021
 
-CFLAGS = -std=c++11 -g -Wall -pedantic -O2 
-CC = g++
+CFLAGS = -std=gnu11 -g -Wall -pedantic -O2 
+CC = gcc
 
-NAME=xkoval18
+NAME=xchuda04
 
-fileget: fileget.cpp server.o
-	$(CC) $(CFLAGS) -o fileget fileget.cpp server.cpp server.h 
+fileget: main.c
+	$(CC) $(CFLAGS) -o fileget main.c
 
-server.o: server.cpp server.h log.h
-	$(CC) $(CFLAGS) -o server.o -c server.cpp server.h 
-
-$(NAME)-src.zip: fileget
-	zip $(NAME)-src.zip fileget.cpp server.cpp server.h log.h makefile 
+$(NAME)-src.zip: fileget 
+	zip $(NAME)-src.zip main.c makefile
 
 $(NAME)-out.zip: fileget 
 	mkdir out -p
@@ -40,7 +36,7 @@ example: fileget
 	cd /tmp/fileget && fileget -n $(SERVER) -f $(FILE)
 	tree /tmp/fileget/
 
-pack: clean $(NAME)-out.zip $(NAME)-src.zip
+pack: clean $(NAME)-src.zip $(NAME)-out.zip
 	echo you are welcome
 
 clean:
@@ -49,4 +45,5 @@ clean:
 	rm -rf index.txt
 	rm -rf $(NAME)-src.zip
 	rm -rf $(NAME)-out.zip
+	rm -rf out
 
